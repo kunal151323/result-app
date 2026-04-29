@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>School Result Portal</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 420px;
+      margin: 60px auto;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .school-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: white;
+      padding: 5px;
+      object-fit: contain;
+    }
+
+    .header h1 {
+      margin: 10px 0 5px;
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    /* FORM CARD */
+    .form-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #4facfe;
+      box-shadow: 0 0 5px rgba(79,172,254,0.3);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      background: #4facfe;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2f89fc;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img src="./school.png" class="school-img">
+
+    <h1>Green Star Public School</h1>
+    <p>Academic Result Portal</p>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card">
+
+    <label>Select Class</label>
+    <select>
+      <option value=""> SELECT YOUR ClASS </option>
+      <option>1st</option>
+      <option>2nd</option>
+      <option>3rd</option>
+      <option>4th</option>
+      <option>5th</option>
+      <option>6th</option>
+      <option>7th</option>
+      <option>8th</option>
+      <option>9th</option>
+      <option>10th</option>
+      <option>11th</option>
+      <option>12th</option>
+    </select>
+
+    <label>Enter Roll Number</label>
+    <input type="text" placeholder="Enter Roll Number">
+
+    <button>View Result</button>
+    <div id="resultBox"></div>
+
+  </div>
+
+</div>
+
+<script src="./script.js"></script>
+
+</body>
+</html>
