@@ -1,4 +1,4 @@
-
+```yaml
 name: Deploy Build Artifact to S3
 
 on:
@@ -25,9 +25,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Build project
+      # Build application
       - name: Build Application
         run: npm run build
+
+      # Check build files
+      - name: Check Build Output
+        run: ls -R
 
       # Configure AWS credentials
       - name: Configure AWS Credentials
@@ -37,7 +41,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Remove old files from S3 bucket
+      # Remove old files from S3
       - name: Clear Old S3 Files
         run: aws s3 rm s3://${{ secrets.S3_BUCKET }} --recursive
 
