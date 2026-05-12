@@ -1,4 +1,4 @@
-```yaml
+
 name: Deploy Build Artifact to S3
 
 on:
@@ -48,4 +48,3 @@ jobs:
       # Upload new build artifact
       - name: Upload New Build
         run: aws s3 cp dist/ s3://${{ secrets.S3_BUCKET }} --recursive
-```
