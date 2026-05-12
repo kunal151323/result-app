@@ -10,25 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # GitHub code checkout
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      # Node setup
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 18
+          node-version: 22
 
-      # Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Build Application
       - name: Build App
         run: npm run build
 
-      # AWS Credentials Configure
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -36,6 +31,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Deploy build files to S3
       - name: Deploy to S3
         run: aws s3 sync build/ s3://${{ secrets.S3_BUCKET }} --delete
