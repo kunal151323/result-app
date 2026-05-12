@@ -1,4 +1,4 @@
-name: Deploy to S3
+name: Deploy Result App to S3
 
 on:
   push:
@@ -10,24 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # GitHub code checkout
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Node install
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      # Node setup
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
       # Install dependencies
-      - name: Install Packages
+      - name: Install Dependencies
         run: npm install
 
-      # Build project
+      # Build Application
       - name: Build App
         run: npm run build
 
-      # AWS credentials
+      # AWS Credentials Configure
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -35,7 +36,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Deploy to S3
-      - name: Upload to S3
-        run: |
-          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }} --delete
+      # Deploy build files to S3
+      - name: Deploy to S3
+        run: aws s3 sync build/ s3://${{ secrets.S3_BUCKET }} --delete
