@@ -23,5 +23,4 @@ jobs:
 
       - name: Upload Website Files
         run: |
-          aws s3 cp . s3://${{ secrets.S3_BUCKET }} --recursive --exclude ".git/*" --exclude ".github/*"
-
+          aws s3 cp result-app/ s3://${{ secrets.S3_BUCKET }} --recursive
