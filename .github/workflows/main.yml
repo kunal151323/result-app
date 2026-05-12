@@ -1,50 +1,32 @@
-
-name: Deploy Build Artifact to S3
+name: Deploy Static Website to S3
 
 on:
-  push:
-    branches:
-      - main
+push:
+branches:
+- main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+deploy:
+runs-on: ubuntu-latest
 
-    steps:
-      # Checkout source code
-      - name: Checkout Code
-        uses: actions/checkout@v5
+```
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v5
 
-      # Setup Node.js
-      - name: Setup Node
-        uses: actions/setup-node@v5
-        with:
-          node-version: 22
+  - name: Configure AWS Credentials
+    uses: aws-actions/configure-aws-credentials@v4
+    with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
 
-      # Install dependencies
-      - name: Install Dependencies
-        run: npm install
+  - name: Remove Old Files from S3
+    run: aws s3 rm s3://${{ secrets.S3_BUCKET }} --recursive
 
-      # Build application
-      - name: Build Application
-        run: npm run build
-
-      # Check build files
-      - name: Check Build Output
-        run: ls -R
-
-      # Configure AWS credentials
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      # Remove old files from S3
-      - name: Clear Old S3 Files
-        run: aws s3 rm s3://${{ secrets.S3_BUCKET }} --recursive
-
-      # Upload new build artifact
-      - name: Upload New Build
-        run: aws s3 cp dist/ s3://${{ secrets.S3_BUCKET }} --recursive
+  - name: Upload Website Files
+    run: |
+      aws s3 cp . s3://${{ secrets.S3_BUCKET }} --recursive \
+      --exclude ".git/*" \
+      --exclude ".github/*"
+```
