@@ -1,3 +1,4 @@
+```yaml
 name: Deploy Static Website to S3
 
 on:
@@ -10,9 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout GitHub code
       - name: Checkout Code
         uses: actions/checkout@v5
 
+      # Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -20,8 +23,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # Upload Website Files to S3
       - name: Upload Files to S3
         run: |
           aws s3 cp . s3://${{ secrets.S3_BUCKET }} --recursive \
           --exclude ".git/*" \
           --exclude ".github/*"
+
+```
