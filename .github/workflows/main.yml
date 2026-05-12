@@ -1,3 +1,5 @@
+name: Deploy Static Website to Azure Blob Storage
+
 on:
   push:
     branches:
@@ -11,16 +13,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v5
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
-      - name: Remove Old Files from S3
-        run: aws s3 rm s3://${{ secrets.S3_BUCKET }} --recursive
-
-      - name: Upload Website Files
+      - name: Upload to Azure Storage
         run: |
-          aws s3 cp result-app/ s3://${{ secrets.S3_BUCKET }} --recursive
+          az storage blob upload-batch \
+            --account-name myk \
+            --destination '$web' \
+            --source result-app \
+            --overwrite
