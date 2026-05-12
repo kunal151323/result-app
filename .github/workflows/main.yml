@@ -1,7 +1,13 @@
+name: Deploy Static Website to Azure Blob Storage
+
 on:
   push:
     branches:
       - main
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
@@ -18,15 +24,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # REMOVE OLD FILES (S3 delete equivalent)
-      - name: Clean Old Files from Azure Blob
-        run: |
-          az storage blob delete-batch \
-            --account-name myk \
-            --source '$web'
-
-      # UPLOAD NEW FILES
-      - name: Upload Website Files
+      - name: Upload to Azure Storage
         run: |
           az storage blob upload-batch \
             --account-name myk \
