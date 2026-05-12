@@ -1,32 +1,27 @@
-name: Deploy Static Website to S3
-
 on:
-push:
-branches:
-- main
+  push:
+    branches:
+      - main
 
 jobs:
-deploy:
-runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
 
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v5
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-  - name: Configure AWS Credentials
-    uses: aws-actions/configure-aws-credentials@v4
-    with:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: ${{ secrets.AWS_REGION }}
+      - name: Remove Old Files from S3
+        run: aws s3 rm s3://${{ secrets.S3_BUCKET }} --recursive
 
-  - name: Remove Old Files from S3
-    run: aws s3 rm s3://${{ secrets.S3_BUCKET }} --recursive
-
-  - name: Upload Website Files
-    run: |
-      aws s3 cp . s3://${{ secrets.S3_BUCKET }} --recursive \
-      --exclude ".git/*" \
-      --exclude ".github/*"
+      - name: Upload Website Files
+        run: |
+          aws s3 cp . s3://${{ secrets.S3_BUCKET }} --recursive --exclude ".git/*" --exclude ".github/*"
 
