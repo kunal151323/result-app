@@ -1,4 +1,4 @@
-```yaml
+
 name: Deploy Build Artifact to S3
 
 on:
